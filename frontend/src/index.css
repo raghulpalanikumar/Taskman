@@ -1,0 +1,73 @@
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Theme variables */
+  --bg: #f8fafc;
+  --text: #222;
+  --card-bg: #fff;
+  --primary: #6366f1;
+  --accent: #e0e7ff;
+  --border: #e5e7eb;
+}
+
+body.dark-mode {
+  --bg: #18181b;
+  --text: #f3f4f6;
+  --card-bg: #23232a;
+  --primary: #818cf8;
+  --accent: #27272a;
+  --border: #27272a;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.3s, color 0.3s;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--card-bg);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.25s, background 0.3s, color 0.3s;
+}
+button:hover {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--card-bg);
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+/* Remove prefers-color-scheme override, use theme variables instead */

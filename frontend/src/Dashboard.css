@@ -1,0 +1,69 @@
+/* Use theme variables for backgrounds, text, borders, etc. */
+.dashboard {
+  background: var(--bg);
+  color: var(--text);
+}
+.dashboard-header {
+  background: var(--card-bg);
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+}
+.dashboard-main {
+  background: var(--bg);
+  color: var(--text);
+}
+.dashboard-container {
+  background: var(--card-bg);
+  color: var(--text);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.06);
+  border: 1px solid var(--border);
+}
+.welcome-section,
+.stats-section,
+.tasks-section {
+  background: var(--card-bg);
+  color: var(--text);
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  border: 1px solid var(--border);
+}
+.stat-card {
+  background: var(--card-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.tasks-header {
+  background: var(--card-bg);
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+}
+.search-input {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.filter-toggle-button,
+.add-task-button,
+.view-toggle-button {
+  background: var(--accent);
+  color: var(--primary);
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  margin-left: 1rem;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+.filter-toggle-button:hover,
+.add-task-button:hover,
+.view-toggle-button:hover {
+  background: var(--primary);
+  color: var(--card-bg);
+}
+.notification {
+  background: var(--card-bg);
+  color: var(--text);
+  border: 1px solid var(--primary);
+}
+/* Add more selectors for KanbanBoard, Calendar, TaskForm, etc. using theme variables */

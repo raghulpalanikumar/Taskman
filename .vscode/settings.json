@@ -1,0 +1,9 @@
+{
+    "editor.suggestOnTriggerCharacters": false,
+    "editor.quickSuggestions": {
+        "other": "off"
+    },
+    "editor.suggest.selectionMode": "never",
+    "editor.quickSuggestionsDelay": 1000000000,
+    "emmet.useInlineCompletions": true
+}
