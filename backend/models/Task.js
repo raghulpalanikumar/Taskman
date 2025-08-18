@@ -1,5 +1,26 @@
 import mongoose from 'mongoose';
 
+
+const commentSchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  text: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now }
+});
+
+const activitySchema = new mongoose.Schema({
+  action: String,
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  timestamp: { type: Date, default: Date.now },
+  details: mongoose.Schema.Types.Mixed
+});
+
+const attachmentSchema = new mongoose.Schema({
+  filename: String,
+  url: String,
+  uploadedAt: { type: Date, default: Date.now },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+});
+
 const taskSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -48,6 +69,10 @@ const taskSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
+  subtasks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task' }],
+  comments: [commentSchema],
+  attachments: [attachmentSchema],
+  activity: [activitySchema],
   createdAt: {
     type: Date,
     default: Date.now

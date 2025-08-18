@@ -1,78 +1,86 @@
+
 import express from 'express';
 import Task from '../models/Task.js';
 import auth from '../middleware/auth.js';
 import mongoose from 'mongoose';
 
 const router = express.Router();
-
-// Get all tasks for a user with filtering
-router.get('/', auth, async (req, res) => {
+// Get a single task by ID
+router.get('/:id', auth, async (req, res) => {
   try {
-    const { category, priority, completed, search, tags } = req.query;
-    
-    // Build filter object
-    const filter = { user: req.user.id };
-    
-    if (category && category !== 'all') {
-      filter.category = category;
+    console.log('GET /tasks/:id', 'User:', req.user.id, 'Task ID:', req.params.id);
+    const task = await Task.findOne({ _id: req.params.id, user: req.user.id });
+    if (!task) {
+      console.log('Task not found for user:', req.user.id, 'Task ID:', req.params.id);
+      return res.status(404).json({ error: 'Task not found' });
     }
-    
-    if (priority && priority !== 'all') {
-      filter.priority = priority;
-    }
-    
-    if (completed !== undefined) {
-      filter.completed = completed === 'true';
-    }
-    
-    if (search) {
-      filter.$or = [
-        { title: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } }
-      ];
-    }
-    
-    if (tags) {
-      const tagArray = tags.split(',').map(tag => tag.trim());
-      filter.tags = { $in: tagArray };
-    }
-    
-    const tasks = await Task.find(filter).sort({ createdAt: -1 });
-    res.json(tasks);
+    res.json(task);
   } catch (err) {
-    console.error('Error fetching tasks:', err);
+    console.error('Error fetching task:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });
 
-// Create a new task
-router.post('/', auth, async (req, res) => {
+// Add a subtask to a task
+router.post('/:id/subtasks', auth, async (req, res) => {
   try {
-    const { title, description, priority, category, tags, dueDate, progress } = req.body;
-    
-    console.log('Create task - received progress:', progress, 'type:', typeof progress);
-    
-    if (!title) {
-      return res.status(400).json({ error: 'Title is required' });
-    }
-    
-    const task = new Task({
-      title,
-      description: description || '',
-      priority: priority || 'medium',
-      category: category || 'other',
-      tags: tags || [],
-      dueDate: dueDate || null,
-      progress: Number(progress) || 0,
-      user: req.user.id
-    });
-    
-    console.log('Create task - setting progress to:', task.progress);
+    const { subtaskId } = req.body;
+    const task = await Task.findOne({ _id: req.params.id, user: req.user.id });
+    if (!task) return res.status(404).json({ error: 'Task not found' });
+    task.subtasks.push(subtaskId);
+    task.activity.push({ action: 'add_subtask', user: req.user.id, details: { subtaskId } });
     await task.save();
-    console.log('Create task - saved progress:', task.progress);
-    res.status(201).json(task);
+    res.json(task);
   } catch (err) {
-    console.error('Error creating task:', err);
+    console.error('Error adding subtask:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Add a comment to a task
+router.post('/:id/comments', auth, async (req, res) => {
+  try {
+    const { text } = req.body;
+    const task = await Task.findOne({ _id: req.params.id, user: req.user.id });
+    if (!task) return res.status(404).json({ error: 'Task not found' });
+    task.comments.push({ user: req.user.id, text });
+    task.activity.push({ action: 'add_comment', user: req.user.id, details: { text } });
+    await task.save();
+    res.json(task.comments);
+  } catch (err) {
+    console.error('Error adding comment:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Add an attachment to a task (URL only, for simplicity)
+router.post('/:id/attachments', auth, async (req, res) => {
+  try {
+    const { filename, url } = req.body;
+    const task = await Task.findOne({ _id: req.params.id, user: req.user.id });
+    if (!task) return res.status(404).json({ error: 'Task not found' });
+    task.attachments.push({ filename, url, user: req.user.id });
+    task.activity.push({ action: 'add_attachment', user: req.user.id, details: { filename, url } });
+    await task.save();
+    res.json(task.attachments);
+  } catch (err) {
+    console.error('Error adding attachment:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Get activity log for a task
+router.get('/:id/activity', auth, async (req, res) => {
+  try {
+    console.log('GET /tasks/:id/activity', 'User:', req.user.id, 'Task ID:', req.params.id);
+    const task = await Task.findOne({ _id: req.params.id, user: req.user.id });
+    if (!task) {
+      console.log('Activity log: Task not found for user:', req.user.id, 'Task ID:', req.params.id);
+      return res.status(404).json({ error: 'Task not found' });
+    }
+    res.json(task.activity);
+  } catch (err) {
+    console.error('Error fetching activity log:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });

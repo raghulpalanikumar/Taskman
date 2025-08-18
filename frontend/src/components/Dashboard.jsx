@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { taskAPI } from "../services/api.js";
 import TaskForm from "./TaskForm.jsx";
+import TaskDetails from "./TaskDetails.jsx";
 import TaskFilters from "./TaskFilters.jsx";
 import Header from "./Header.jsx";
 import Calendar from "./Calendar.jsx";
@@ -14,6 +15,7 @@ export default function Dashboard() {
   const [showFilters, setShowFilters] = useState(false);
   const [showTaskForm, setShowTaskForm] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
+  const [showTaskDetails, setShowTaskDetails] = useState(false);
   const [view, setView] = useState('kanban');
   const [filters, setFilters] = useState({
     search: '',
@@ -187,11 +189,12 @@ export default function Dashboard() {
   };
 
   const handleTaskClick = (task) => {
-    openEditTask(task);
+  setEditingTask(task);
+  setShowTaskDetails(true);
   };
 
   return (
-    <div className="dashboard" style={{ background: 'var(--bg)', color: 'var(--text)' }}>
+  <div className="dashboard" style={{ background: 'var(--bg)', color: 'var(--text)' }}>
       <Header user={user} onLogout={handleLogout} />
       
       {/* Notification */}
@@ -353,6 +356,17 @@ export default function Dashboard() {
           onSubmit={editingTask ? handleEditTask : handleAddTask}
           onCancel={() => {
             setShowTaskForm(false);
+            setEditingTask(null);
+          }}
+        />
+      )}
+
+      {/* Task Details Modal */}
+      {showTaskDetails && editingTask && (
+        <TaskDetails
+          taskId={editingTask._id}
+          onClose={() => {
+            setShowTaskDetails(false);
             setEditingTask(null);
           }}
         />

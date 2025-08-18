@@ -97,6 +97,40 @@ export const taskAPI = {
       method: 'DELETE',
     });
   },
+
+  // Get a single task by ID
+  getTask: async (taskId) => {
+    return makeAuthenticatedRequest(`/tasks/${taskId}`);
+  },
+
+  // Get activity log for a task
+  getTaskActivity: async (taskId) => {
+    return makeAuthenticatedRequest(`/tasks/${taskId}/activity`);
+  },
+
+  // Add a comment to a task
+  addTaskComment: async (taskId, text) => {
+    return makeAuthenticatedRequest(`/tasks/${taskId}/comments`, {
+      method: 'POST',
+      body: JSON.stringify({ text }),
+    });
+  },
+
+  // Add an attachment to a task
+  addTaskAttachment: async (taskId, filename, url) => {
+    return makeAuthenticatedRequest(`/tasks/${taskId}/attachments`, {
+      method: 'POST',
+      body: JSON.stringify({ filename, url }),
+    });
+  },
+
+  // Add a subtask to a task
+  addTaskSubtask: async (taskId, subtaskId) => {
+    return makeAuthenticatedRequest(`/tasks/${taskId}/subtasks`, {
+      method: 'POST',
+      body: JSON.stringify({ subtaskId }),
+    });
+  },
 };
 
 // Auth API methods
