@@ -20,11 +20,11 @@ const Home = () => {
             <Link to="/" className="logo-text">TaskMan</Link>
           </div>
           
-          <nav className="header-nav">
-            <Link to="/" className="nav-link">Home</Link>
-            <Link to="/features" className="nav-link">Features</Link>
-            <Link to="/about" className="nav-link">About</Link>
-            <Link to="/contact" className="nav-link">Contact</Link>
+          <nav>
+            <center>
+               <Link to="/" className="nav-link">Home</Link>
+            </center>
+           
           </nav>
           
           <div className="auth-buttons">

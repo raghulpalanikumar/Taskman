@@ -57,27 +57,32 @@ router.post('/signup', async (req, res) => {
 });
 
 // Login
+
 router.post('/login', async (req, res) => {
   console.log('Login request received:', req.body);
   const { email, password } = req.body;
-  
+
   if (!email || !password) {
     console.log('Missing login fields:', { email: !!email, password: !!password });
     return res.status(400).json({ error: 'Email and password are required' });
   }
-  
+
   try {
     const user = await User.findOne({ email });
-    console.log('User lookup result:', user ? 'User found' : 'User not found');
-    
     if (!user) {
       console.log('No user found with email:', email);
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
+    console.log('User found:', {
+      email: user.email,
+      passwordHash: user.password,
+      inputPassword: password
+    });
+
     const isMatch = await bcrypt.compare(password, user.password);
     console.log('Password match result:', isMatch);
-    
+
     if (!isMatch) {
       console.log('Password mismatch for user:', email);
       return res.status(401).json({ error: 'Invalid email or password' });
