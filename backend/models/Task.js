@@ -64,6 +64,11 @@ const taskSchema = new mongoose.Schema({
   dueDate: {
     type: Date
   },
+  recurrence: {
+    type: String,
+    enum: ['none', 'daily'],
+    default: 'daily'
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

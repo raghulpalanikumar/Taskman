@@ -28,7 +28,8 @@ export default function TaskForm({ task, onSubmit, onCancel }) {
     progress: 0,
     tags: [],
     dueDate: '',
-    dueTime: ''
+    dueTime: '',
+    recurrence: 'daily'
   });
   const [newTag, setNewTag] = useState('');
   const [errors, setErrors] = useState({});
@@ -45,7 +46,8 @@ export default function TaskForm({ task, onSubmit, onCancel }) {
         progress: task.progress || 0,
         tags: task.tags || [],
         dueDate: taskDate ? taskDate.toISOString().split('T')[0] : '',
-        dueTime: taskDate ? taskDate.toTimeString().split(' ')[0] : ''
+        dueTime: taskDate ? taskDate.toTimeString().split(' ')[0] : '',
+        recurrence: task.recurrence || 'none'
       });
     } else {
       // Check for quick add status from localStorage
@@ -250,6 +252,19 @@ export default function TaskForm({ task, onSubmit, onCancel }) {
                 onChange={handleChange}
               />
             </div>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="recurrence">Recurrence</label>
+            <select
+              id="recurrence"
+              name="recurrence"
+              value={formData.recurrence}
+              onChange={handleChange}
+            >
+              <option value="none">None</option>
+              <option value="daily">Daily</option>
+            </select>
           </div>
 
           <div className="form-group">

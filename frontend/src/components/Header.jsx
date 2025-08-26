@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Header.css';
+import AIAssistant from './AIAssistant';
 
 export default function Header({ user, onLogout }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem('darkMode') === 'true');
+  const [showAI, setShowAI] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,7 +48,15 @@ export default function Header({ user, onLogout }) {
               </svg>
               Dashboard
             </button>
-           
+            <button className="nav-item" onClick={() => setShowAI(true)}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
+                <path d="M8 15c1.333-2 6.667-2 8 0" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                <circle cx="9" cy="10" r="1" fill="currentColor"/>
+                <circle cx="15" cy="10" r="1" fill="currentColor"/>
+              </svg>
+              AI Assistant
+            </button>
             <button className="nav-item">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M8 2V5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -156,6 +166,7 @@ export default function Header({ user, onLogout }) {
           {darkMode ? '🌙' : '☀️'}
         </button>
       </div>
+      <AIAssistant open={showAI} onClose={() => setShowAI(false)} />
     </header>
   );
 }

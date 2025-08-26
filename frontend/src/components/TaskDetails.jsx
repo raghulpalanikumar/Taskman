@@ -63,6 +63,7 @@ export default function TaskDetails({ taskId, onClose }) {
         <p>{task.description}</p>
         <div><strong>Status:</strong> {task.status}</div>
         <div><strong>Priority:</strong> {task.priority}</div>
+        <div><strong>Recurrence:</strong> {task.recurrence || 'none'}</div>
         <div><strong>Tags:</strong> {task.tags && task.tags.join(', ')}</div>
         <div><strong>Due Date:</strong> {task.dueDate ? new Date(task.dueDate).toLocaleString() : 'None'}</div>
         <div><strong>Subtasks:</strong>
@@ -89,7 +90,11 @@ export default function TaskDetails({ taskId, onClose }) {
         </div>
         <div><strong>Activity Log:</strong>
           <ul>
-            {activity.map((a, i) => <li key={i}>{a.action} by {a.user} at {new Date(a.timestamp).toLocaleString()}</li>)}
+            {activity.map((a, i) => (
+              <li key={i}>
+                {a.action} by {a.user?.name || a.user?.username || a.user} at {new Date(a.timestamp).toLocaleString()}
+              </li>
+            ))}
           </ul>
         </div>
       </div>

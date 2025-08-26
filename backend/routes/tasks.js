@@ -5,6 +5,30 @@ import auth from '../middleware/auth.js';
 import mongoose from 'mongoose';
 
 const router = express.Router();
+// Create a new task
+router.post('/', auth, async (req, res) => {
+  try {
+    const { title, description, priority, category, tags, dueDate, status, progress } = req.body;
+    const recurrence = req.body.recurrence || 'daily';
+    const task = new Task({
+      title,
+      description,
+      priority,
+      category,
+      tags,
+      dueDate,
+      status,
+      progress,
+      recurrence,
+      user: req.user.id
+    });
+    await task.save();
+    res.status(201).json(task);
+  } catch (err) {
+    console.error('Error creating task:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 // Get a single task by ID
 router.get('/:id', auth, async (req, res) => {
   try {
@@ -72,10 +96,9 @@ router.post('/:id/attachments', auth, async (req, res) => {
 // Get activity log for a task
 router.get('/:id/activity', auth, async (req, res) => {
   try {
-    console.log('GET /tasks/:id/activity', 'User:', req.user.id, 'Task ID:', req.params.id);
-    const task = await Task.findOne({ _id: req.params.id, user: req.user.id });
+    const task = await Task.findOne({ _id: req.params.id, user: req.user.id })
+      .populate('activity.user', 'name username');
     if (!task) {
-      console.log('Activity log: Task not found for user:', req.user.id, 'Task ID:', req.params.id);
       return res.status(404).json({ error: 'Task not found' });
     }
     res.json(task.activity);
@@ -88,7 +111,7 @@ router.get('/:id/activity', auth, async (req, res) => {
 // Update a task
 router.put('/:id', auth, async (req, res) => {
   try {
-  const { title, description, completed, priority, category, tags, dueDate, status, progress } = req.body;
+  const { title, description, completed, priority, category, tags, dueDate, status, progress, recurrence } = req.body;
     
     console.log('Update task - received progress:', progress, 'type:', typeof progress);
     
@@ -111,6 +134,7 @@ router.put('/:id', auth, async (req, res) => {
     task.progress = Number(progress);
     console.log('Update task - setting progress to:', task.progress);
   }
+  if (recurrence !== undefined) task.recurrence = recurrence;
     
     await task.save();
     console.log('Update task - saved progress:', task.progress);
@@ -209,6 +233,17 @@ router.get('/stats', auth, async (req, res) => {
     res.json(response);
   } catch (err) {
     console.error('Error fetching stats:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Get all tasks for the logged-in user
+router.get('/', auth, async (req, res) => {
+  try {
+    const tasks = await Task.find({ user: req.user.id });
+    res.json(tasks);
+  } catch (err) {
+    console.error('Error fetching tasks:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });
