@@ -143,40 +143,4 @@ npm run dev
 📧 [raghulpg2006@gmail.com](mailto:raghulpg2006@gmail.com)
 🔗 [https://github.com/raghulpalanikumar](https://github.com/raghulpalanikumar)
 
----
 
-⭐ If you like this project, give it a star!
-
-```
-
----
-
-## ⚠️ VERY IMPORTANT (Fix this immediately)
-Your current README contains:
-```
-
-mongodb+srv://raghul:raghul*123@cluster0...
-
-```
-👉 This is **public password leakage** :contentReference[oaicite:0]{index=0}  
-
-### Do this NOW:
-- Change MongoDB password  
-- Remove it from GitHub  
-- Use `.env` file  
-
----
-
-## 🔥 What changed (why this is better)
-- Sounds like **AI + intelligent system** ✅  
-- Cleaner, shorter, recruiter-friendly ✅  
-- No unnecessary clutter ✅  
-- Professional GitHub look ✅  
-
----
-
-If you want next level 🚀  
-I can:
-- Add **real AI (OpenAI / ML)** into your project  
-- Or make your **GitHub look like top 1% developer profile**
-```
