@@ -1,13 +1,3 @@
-Your README is good structurally, but right now it has **two big problems**:
-
-1. ❌ Looks like a **basic MERN project**
-2. ❌ **Sensitive data exposed** (MongoDB URL + password 😬)
-
-I’ve rewritten it into a **clean, professional, AI-focused version** that will impress recruiters 👇
-
----
-
-## ✅ **UPDATED README.md (CLEAR + STRONG VERSION)**
 
 ```markdown
 # 🚀 TaskHive — AI-Enhanced Task Management System
